@@ -15,5 +15,27 @@ is written correctly.
 Use comments to write a story for an entire functional test. This allows
 for the goal of the test to remain clear while the test and application
 are initially written and modified. Consider scoping changes tightly
-enough that `git -a` (-a -> all modified tracked files) can be used.
+enough that `git commit -a` (-a -> all modified tracked files) can be
+used.
 ### 3. Testing a Simple Home Page with Unit Tests
+*Functional tests*: test the application from the outside--the user's perspective. These tests represent a user interacting with the
+application to achieve a specific goal. Functional tests aid in the
+creation of an application that affords the user a specific
+functionality.
+*Unit tests*: test the application from the programmers perspective.
+These tests should cover (that is, each line of application code should
+be executed by one or more unit tests, not that each line of code needs
+its own unit test) each line of the application code to ensure
+that the logic represented by the code is sound. Unit tests aid in
+writing clean and bug free code.
+The Test Driven Development loop is an iterative four step process:
+1. Write a functional test that describes an interaction between the
+user and the application. Assert that this test currently fails.
+2. Think about how to structure application code to get the functional
+test to pass. Write a unit test for the smallest conceivable group of application code that could be written to successfully execute the first
+failing line in the functional test. Assert that this test currently
+fails.
+3. Write the smallest amount of application code possible to get the
+new unit test to pass. Assert that the unit test passes and, if
+applicable, that the functional test progresses further before failing.
+4. Repeat until the functional test passes.
