@@ -29,6 +29,7 @@ its own unit test) each line of the application code to ensure
 that the logic represented by the code is sound. Unit tests aid in
 writing clean and bug free code.
 The Test Driven Development loop is an iterative four step process:
+
 1. Write a functional test that describes an interaction between the
 user and the application. Assert that this test currently fails.
 2. Think about how to structure application code to get the functional
@@ -39,3 +40,11 @@ fails.
 new unit test to pass. Assert that the unit test passes and, if
 applicable, that the functional test progresses further before failing.
 4. Repeat until the functional test passes.
+
+Django 1.8 maps the URL of a request to a view function via the
+`reslove` function. This function compares the URL to the regular
+expressions defined in the project and application `urls.py` modules.
+The view function receives the request and returns an HTTP response.
+
+Respond to test failures by **making the smallest possible change**
+**required to correct the current test failure.**
