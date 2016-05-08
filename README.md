@@ -53,3 +53,8 @@ Test driven development acts as a scaffolding and safety net that
 provides assurances of correctness regardless of complexity.
 Test driven development is a discipline, which means it is an unnatural
 activity that requires consistent repetition and adherence.
+Unit tests are for testing:
+ - Logic
+ - Flow control
+ - Configuration
+Refactoring: Improving code without changing functionality.
