@@ -40,7 +40,7 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Make up a better story", as an item in a todo list.
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element('id_list_table')
+        table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
             any(row.text == '1: Make up a better story' for row in rows)
