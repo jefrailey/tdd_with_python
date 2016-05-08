@@ -48,3 +48,8 @@ The view function receives the request and returns an HTTP response.
 
 Respond to test failures by **making the smallest possible change**
 **required to correct the current test failure.**
+### 4. What Are We Doing with All These Tests?
+Test driven development acts as a scaffolding and safety net that
+provides assurances of correctness regardless of complexity.
+Test driven development is a discipline, which means it is an unnatural
+activity that requires consistent repetition and adherence.
