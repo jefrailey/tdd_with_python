@@ -15,6 +15,11 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
 
         # Moose, a cantankerous web scraper, heard about a cool new online todo
@@ -40,9 +45,7 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Make up a better story", as an item in a todo list.
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Make up a better story', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Make up a better story')
 
         # A textbox invites it to enter another item. It enters
         # "Tell the better story to a stranger".
@@ -51,11 +54,10 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
         # The page updates again with both items on its list
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Make up a better story', [row.text for row in rows])
-        self.assertIn('2: Tell the better story to a stranger',
-                      [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Make up a better story')
+        self.check_for_row_in_list_table(
+            '2: Tell the better story to a stranger'
+        )
 
         # It wonders if the site will remember the lsit. Then it notices that
         # the site generated a unique URL for it.
