@@ -42,19 +42,24 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Make up a better story' for row in rows),
-            'New to-do item did not appear in table'
-        )
+        self.assertIn('1: Make up a better story', [row.text for row in rows])
 
         # A textbox invites it to enter another item. It enters
         # "Tell the better story to a stranger".
-        self.fail('Finish the test!')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Tell the better story to a stranger')
+        inputbox.send_keys(Keys.ENTER)
 
         # The page updates again with both items on its list
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Make up a better story', [row.text for row in rows])
+        self.assertIn('2: Tell the better story to a stranger',
+                      [row.text for row in rows])
 
         # It wonders if the site will remember the lsit. Then it notices that
         # the site generated a unique URL for it.
+        self.fail('Finish the test!')
 
         # It visits that URL; the todo list is there.
 
