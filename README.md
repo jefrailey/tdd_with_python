@@ -58,3 +58,4 @@ Unit tests are for testing:
  - Flow control
  - Configuration
 Refactoring: Improving code without changing functionality.
+### 5. Saving User Input
