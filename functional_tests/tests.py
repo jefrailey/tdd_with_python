@@ -39,10 +39,13 @@ class NewVisitorTest(LiveServerTestCase):
         # It types "Make up a better story" into a text box.
         inputbox.send_keys('Make up a better story')
 
-        # When it hits enter, the page updates, and now lists,
-        # "1: Make up a better story", as an item in a todo list.
+        # When it hits enter, the page redirects to a unique URL for the
+        # list, which displays, "1: Make up a better story", as an item
+        # in a todo list.
         inputbox.send_keys(Keys.ENTER)
 
+        moose_list_url = self.browser.current_url
+        self.assertRegex(moose_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Make up a better story')
 
         # A textbox invites it to enter another item. It enters
@@ -57,10 +60,34 @@ class NewVisitorTest(LiveServerTestCase):
             '2: Tell the better story to a stranger'
         )
 
-        # It wonders if the site will remember the lsit. Then it notices that
-        # the site generated a unique URL for it.
+        # Now a new user, Bear, visits the site.
+
+        ## Double hash indicates "meta-comments," which explain how
+        ## the test is working and why.
+        ## Use a new browser session to make sure that no information
+        ## from Moose leaks to Bear via cookies
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        # Bear visits the home page; he does not see Moose's list
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('1: Make up a better story', page_text)
+        self.assertNotIn('2: Tell the better story to a stranger', page_text)
         self.fail('Finish the test!')
 
-        # It visits that URL; the todo list is there.
+        # Bear starts a new list by entering an item.
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Buy beer')
+        inputbox.send_keys(Keys.ENTER)
 
-        # Satisfied, it crawls away.
+        # Bear's list gets its own URL
+        bears_list_url = self.browser.current_url
+        self.assertRegex(bears_list_url, '/lists/.+')
+        self.assertNotEqual(bears_list_url, moose_list_url)
+
+        # Again, no Moose in Bear
+        page_text = self.browser.find_element_by_name('body').text
+        self.assertNotIn('1: Make up a better story', page_text)
+        self.assertNotIn('2: Tell the better story to a stranger', page_text)
+        self.assertIn('Buy beer', page_text)
