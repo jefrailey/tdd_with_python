@@ -59,3 +59,10 @@ Unit tests are for testing:
  - Configuration
 Refactoring: Improving code without changing functionality.
 ### 5. Saving User Input
+In a purist's view, a unit test does not rely on any external systems,
+including a database. Tests that rely on external systems are called
+integrated tests. Unit tests and integrated tests are both low level
+tests that exemplify the programmer interacting with the application;
+functional tests test the application from the user's perspective.
+DJANGO: `<Model>.objects.create(<field>=<value>)` is a shortcut for
+creating and saving new rows.
