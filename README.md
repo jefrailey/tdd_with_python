@@ -66,3 +66,22 @@ tests that exemplify the programmer interacting with the application;
 functional tests test the application from the user's perspective.
 DJANGO: `<Model>.objects.create(<field>=<value>)` is a shortcut for
 creating and saving new rows.
+### 6. Getting to the Minimum Viable Site
+DJANGO: `django.test.LiveServerTestCase` is a subclass of
+`unittest.TestCase` that will automatically manage test database setup
+and teardown. This provides better test isolation.
+GIT: `git diff -M` take into account moved files when creating a diff.
+HTML: The `action` attribute of the `form` tag indicates which URI to
+submit the form to.
+####Process for Incrementally Altering Design
+1. Run the functional tests to establish the baseline functionality.
+1. Adjust functional tests to test against the new design.
+1. Run the functional tests and record the first failure.
+1. Change the unit tests to have the same expectation as the
+the line in the functional test that failed.
+1. Run the unit tests and record the first failure.
+1. Make the smallest change possible to the application code to fix the
+current unit test failure.
+1. Repeat the previous two steps until all the unit tests pass.
+1. Verify
+1. Refactor if necessary.
