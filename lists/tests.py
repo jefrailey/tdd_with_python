@@ -48,19 +48,35 @@ class ListAndItemModelTest(TestCase):
 class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
-        response = self.client.get('/lists/highlander/')
+        list_ = List.objects.create()
+        response = self.client.get('/lists/{list_.id}/'.format_map(locals()))
         self.assertTemplateUsed(response, 'lists/list.html')
 
-    def test_displays_all_items(self):
-        list_ = List.objects.create()
+    def test_displays_only_items_for_that_list(self):
+        correct_list = List.objects.create()
         for number in range(1, 3, 1):
             Item.objects.create(text='itemey {}'.format(number),
-                                list=list_)
+                                list=correct_list)
+        other_list = List.objects.create()
+        for number in range(1, 3, 1):
+            Item.objects.create(text='other list item {}'.format(number),
+                                list=other_list)
 
-        response = self.client.get('/lists/highlander/')
+        response = self.client.get(
+            '/lists/{correct_list.id}/'.format_map(locals())
+        )
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+        self.assertNotContains(response, 'other list item 1')
+        self.assertNotContains(response, 'other list item 2')
+
+    def test_passes_correct_list_to_template(self):
+        List.objects.create()
+        correct_list = List.objects.create()
+        uri = '/lists/{correct_list.id}/'.format_map(locals())
+        response = self.client.get(uri)
+        self.assertEqual(response.context['list'], correct_list)
 
 
 class NewListTest(TestCase):
@@ -79,5 +95,32 @@ class NewListTest(TestCase):
             '/lists/new',
             data={'item_text': 'do stuff'}
         )
+        list_ = List.objects.first()
+        self.assertRedirects(response,
+                             '/lists/{list_.id}/'.format_map(locals()))
 
-        self.assertRedirects(response, '/lists/highlander/')
+
+class NewItemTest(TestCase):
+
+    def test_can_save_a_POST_request_to_an_existing_list(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        uri = '/lists/{correct_list.id}/add-item'.format_map(locals())
+
+        response = self.client.post(uri, data={'item_text': 'new item text'})
+
+        self.assertEqual(Item.objects.count(), 1)
+        items = Item.objects.filter(list=correct_list)
+        self.assertEqual(items.count(), 1)
+        new_item = items.first()
+        self.assertEqual(new_item.text, 'new item text')
+        self.assertEqual(new_item.list, correct_list)
+
+    def test_redirects_to_list_view(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        uri = '/lists/{correct_list.id}/add-item'.format_map(locals())
+
+        response = self.client.post(uri, data={'item_text': 'new item text'})
+        self.assertRedirects(response,
+                             '/lists/{correct_list.id}/'.format_map(locals()))
