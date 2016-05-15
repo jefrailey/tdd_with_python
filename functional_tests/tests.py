@@ -86,7 +86,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(bears_list_url, moose_list_url)
 
         # Again, no Moose in Bear
-        page_text = self.browser.find_element_by_name('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('1: Make up a better story', page_text)
         self.assertNotIn('2: Tell the better story to a stranger', page_text)
         self.assertIn('Buy beer', page_text)
