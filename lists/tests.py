@@ -4,7 +4,10 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 
 from lists.views import home_page
-from lists.models import Item
+from lists.models import (
+    Item,
+    List,
+)
 
 
 class HomePageTest(TestCase):
@@ -20,24 +23,26 @@ class HomePageTest(TestCase):
         self.assertTrue(response.content.decode(), expected_html)
 
 
-class ItemModelTest(TestCase):
+class ListAndItemModelTest(TestCase):
 
     def test_saving_and_retrieving_items(self):
-        first_item = Item()
-        first_item.text = 'The first (ever) list item'
-        first_item.save()
+        new_list = List()
+        new_list.save()
+        item_texts = ['The first (ever) list item', 'Item the second']
+        for text in item_texts:
+            Item.objects.create(text=text, list=new_list)
 
-        second_item = Item()
-        second_item.text = 'Item the second'
-        second_item.save()
+        saved_list = List.objects.first()
+        self.assertEqual(saved_list, new_list)
 
         saved_items = Item.objects.all()
         self.assertEqual(saved_items.count(), 2)
 
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
+        first_saved_item, second_saved_item = saved_items
         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+        self.assertEqual(first_saved_item.list, new_list)
         self.assertEqual(second_saved_item.text, 'Item the second')
+        self.assertEqual(second_saved_item.list, new_list)
 
 
 class ListViewTest(TestCase):
@@ -47,8 +52,10 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, 'lists/list.html')
 
     def test_displays_all_items(self):
+        list_ = List.objects.create()
         for number in range(1, 3, 1):
-            Item.objects.create(text='itemey {}'.format(number))
+            Item.objects.create(text='itemey {}'.format(number),
+                                list=list_)
 
         response = self.client.get('/lists/highlander/')
 
