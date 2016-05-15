@@ -74,7 +74,6 @@ class NewVisitorTest(LiveServerTestCase):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('1: Make up a better story', page_text)
         self.assertNotIn('2: Tell the better story to a stranger', page_text)
-        self.fail('Finish the test!')
 
         # Bear starts a new list by entering an item.
         inputbox = self.browser.find_element_by_id('id_new_item')
