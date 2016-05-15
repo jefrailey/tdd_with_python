@@ -83,5 +83,5 @@ the line in the functional test that failed.
 1. Make the smallest change possible to the application code to fix the
 current unit test failure.
 1. Repeat the previous two steps until all the unit tests pass.
-1. Verify
+1. Verify application meet or exceed previous baseline functionality.
 1. Refactor if necessary.
