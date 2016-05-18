@@ -85,3 +85,8 @@ current unit test failure.
 1. Repeat the previous two steps until all the unit tests pass.
 1. Verify application meet or exceed previous baseline functionality.
 1. Refactor if necessary.
+####On testing design and layout:
+Test for the implementation of design and layout, but not the specific
+design or layout. This means writing tests that assert a layout or
+design is working without asserting anything specific about the layout.
+### 8. Testing Deployment Using a Staging Site
