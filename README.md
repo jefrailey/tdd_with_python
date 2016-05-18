@@ -57,7 +57,9 @@ Unit tests are for testing:
  - Logic
  - Flow control
  - Configuration
+
 Refactoring: Improving code without changing functionality.
+
 ### 5. Saving User Input
 In a purist's view, a unit test does not rely on any external systems,
 including a database. Tests that rely on external systems are called
@@ -66,6 +68,7 @@ tests that exemplify the programmer interacting with the application;
 functional tests test the application from the user's perspective.
 DJANGO: `<Model>.objects.create(<field>=<value>)` is a shortcut for
 creating and saving new rows.
+
 ### 6. Getting to the Minimum Viable Site
 DJANGO: `django.test.LiveServerTestCase` is a subclass of
 `unittest.TestCase` that will automatically manage test database setup
@@ -73,7 +76,9 @@ and teardown. This provides better test isolation.
 GIT: `git diff -M` take into account moved files when creating a diff.
 HTML: The `action` attribute of the `form` tag indicates which URI to
 submit the form to.
+
 ####Process for Incrementally Altering Design
+
 1. Run the functional tests to establish the baseline functionality.
 1. Adjust functional tests to test against the new design.
 1. Run the functional tests and record the first failure.
@@ -85,8 +90,10 @@ current unit test failure.
 1. Repeat the previous two steps until all the unit tests pass.
 1. Verify application meet or exceed previous baseline functionality.
 1. Refactor if necessary.
+
 ####On testing design and layout:
 Test for the implementation of design and layout, but not the specific
 design or layout. This means writing tests that assert a layout or
 design is working without asserting anything specific about the layout.
+
 ### 8. Testing Deployment Using a Staging Site
