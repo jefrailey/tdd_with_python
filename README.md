@@ -97,3 +97,8 @@ design or layout. This means writing tests that assert a layout or
 design is working without asserting anything specific about the layout.
 
 ### 8. Testing Deployment Using a Staging Site
+
+### 10.
+
+DJANGO: Models do not run full validation on save. Validation can be
+forced by calling `ModelClass.full_clean()`.
