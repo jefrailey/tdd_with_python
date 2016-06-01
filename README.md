@@ -102,3 +102,9 @@ design is working without asserting anything specific about the layout.
 
 DJANGO: Models do not run full validation on save. Validation can be
 forced by calling `ModelClass.full_clean()`.
+
+#### Steps to preform an application level refactor:
+
+1. Change or add unit tests.
+2. Adjust code.
+3. Repeat until functional tests pass

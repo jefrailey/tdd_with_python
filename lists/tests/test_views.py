@@ -57,6 +57,29 @@ class ListViewTest(TestCase):
         response = self.client.get(uri)
         self.assertEqual(response.context['list'], correct_list)
 
+    def test_can_save_a_POST_request_to_an_existing_list(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        uri = '/lists/{correct_list.id}/'.format_map(locals())
+
+        response = self.client.post(uri, data={'item_text': 'new item text'})
+
+        self.assertEqual(Item.objects.count(), 1)
+        items = Item.objects.filter(list=correct_list)
+        self.assertEqual(items.count(), 1)
+        new_item = items.first()
+        self.assertEqual(new_item.text, 'new item text')
+        self.assertEqual(new_item.list, correct_list)
+
+    def test_POST_redirects_to_list_view(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        uri = '/lists/{correct_list.id}/'.format_map(locals())
+
+        response = self.client.post(uri, data={'item_text': 'new item text'})
+        self.assertRedirects(response,
+                             '/lists/{correct_list.id}/'.format_map(locals()))
+
 
 class NewListTest(TestCase):
 
@@ -89,29 +112,3 @@ class NewListTest(TestCase):
         self.client.post('/lists/new', data={'item_text': ''})
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
-
-
-class NewItemTest(TestCase):
-
-    def test_can_save_a_POST_request_to_an_existing_list(self):
-        other_list = List.objects.create()
-        correct_list = List.objects.create()
-        uri = '/lists/{correct_list.id}/add-item'.format_map(locals())
-
-        response = self.client.post(uri, data={'item_text': 'new item text'})
-
-        self.assertEqual(Item.objects.count(), 1)
-        items = Item.objects.filter(list=correct_list)
-        self.assertEqual(items.count(), 1)
-        new_item = items.first()
-        self.assertEqual(new_item.text, 'new item text')
-        self.assertEqual(new_item.list, correct_list)
-
-    def test_redirects_to_list_view(self):
-        other_list = List.objects.create()
-        correct_list = List.objects.create()
-        uri = '/lists/{correct_list.id}/add-item'.format_map(locals())
-
-        response = self.client.post(uri, data={'item_text': 'new item text'})
-        self.assertRedirects(response,
-                             '/lists/{correct_list.id}/'.format_map(locals()))
