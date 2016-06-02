@@ -27,7 +27,7 @@ def view_list(request, list_id):
             error = "You can't have an empty list item."
         else:
             item.save()
-            return redirect('/lists/{list_.id}/'.format(list_=list_))
+            return redirect(list_)
     return render(request, 'lists/list.html', {'list': list_, 'error': error})
 
 
@@ -45,4 +45,4 @@ def new_list(request):
         )
     else:
         item.save()
-    return redirect('/lists/{list_.id}/'.format_map(locals()))
+    return redirect(list_)
