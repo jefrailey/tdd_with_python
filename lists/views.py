@@ -5,6 +5,9 @@ from django.shortcuts import (
     render,
 )
 
+from lists.forms import (
+    ItemForm,
+)
 from lists.models import (
     Item,
     List,
@@ -12,7 +15,7 @@ from lists.models import (
 
 
 def home_page(request):
-    return render(request, 'lists/home.html')
+    return render(request, 'lists/home.html', {'form': ItemForm()})
 
 
 def view_list(request, list_id):
