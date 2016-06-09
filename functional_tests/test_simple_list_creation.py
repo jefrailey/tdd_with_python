@@ -22,7 +22,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('To-Do', header_text)
 
         # It is immediately invited to enter a todo item.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
             'Enter a to-do item'
@@ -42,7 +42,7 @@ class NewVisitorTest(FunctionalTest):
 
         # A textbox invites it to enter another item. It enters
         # "Tell the better story to a stranger".
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Tell the better story to a stranger')
         inputbox.send_keys(Keys.ENTER)
 
@@ -68,7 +68,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn('2: Tell the better story to a stranger', page_text)
 
         # Bear starts a new list by entering an item.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Buy beer')
         inputbox.send_keys(Keys.ENTER)
 
